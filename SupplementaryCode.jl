@@ -16,6 +16,10 @@ using Plots
 ToyDM = DataModel(DataSet([1,2,3], [4,5,6.5], [0.5,0.45,0.6]), (x,p)->(p[1]+p[2])*x + exp(p[1]-p[2]))
 
 
+# Show MLE
+MLE(ToyDM)
+
+
 # Compute 1σ and 2σ confidence regions
 sols = ConfidenceRegions(ToyDM, 1:2)
 
@@ -24,12 +28,13 @@ sols = ConfidenceRegions(ToyDM, 1:2)
 VisualizeSols(ToyDM, sols)
 
 
-# Show dataset
+# Show dataset with best fit
 plot(ToyDM)
 
-# Compute pointwise 1σ confidence bands
+# Compute pointwise 1σ confidence bands using computed confidence boundary
+ConfidenceBands(ToyDM, sols[1])
+# Compute 2σ confidence bands
 ConfidenceBands(ToyDM, sols[2])
-
 
 
 
@@ -89,7 +94,7 @@ VisualizeSols(SIRDM2, SIR2sols)
 
 
 # 1σ confidence band for SIR predictions
-plot(SIRDM2);   ConfidenceBands(SIRDM2, SIR2sols[2])
+plot(SIRDM2);   ConfidenceBands(SIRDM2, SIR2sols[1])
 
 
 # SIR model with 3 parameters
@@ -103,6 +108,3 @@ VisualizeSols(SIRDM3, SIR3planes, SIR3sols)
 
 
 plot(SIRDM3);   ConfidenceBands(SIRDM3, SIR3planes, SIR3sols)
-
-
-PlaneCoordinates(SIR3planes[1], SIR3sols[1](0.5))
