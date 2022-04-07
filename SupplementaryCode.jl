@@ -28,13 +28,13 @@ sols = ConfidenceRegions(ToyDM, 1:2)
 VisualizeSols(ToyDM, sols)
 
 
+
 # Show dataset with best fit
 plot(ToyDM)
-
 # Compute pointwise 1σ confidence bands using computed confidence boundary
-ConfidenceBands(ToyDM, sols[1])
+ConfidenceBands(ToyDM, sols[1]; plot=true)
 # Compute 2σ confidence bands
-ConfidenceBands(ToyDM, sols[2])
+ConfidenceBands(ToyDM, sols[2]; plot=true)
 
 
 
@@ -62,8 +62,10 @@ SCPModel = DataModel(SCPData, DistanceModulus, [0.2, -1])
 
 plot(SCPModel; leg=:bottomright)
 
+
+scpsols = ConfidenceRegions(SCPModel, 1:2)
 # Visualize 1σ and 2σ confidence regions
-VisualizeSols(SCPModel, ConfidenceRegions(SCPModel, 1:2))
+VisualizeSols(SCPModel, scpsols)
 
 
 
@@ -97,14 +99,15 @@ VisualizeSols(SIRDM2, SIR2sols)
 plot(SIRDM2);   ConfidenceBands(SIRDM2, SIR2sols[1])
 
 
+
 # SIR model with 3 parameters
-SIRDM3 = DataModel(SIRDS, SIRsys, p->(@MVector([763-p[1], p[1], 0.0]), p[2:3]), SIRobservables, [0.5, 0.002, 0.5]; tol=1e-8)
+SIRDM3 = DataModel(SIRDS, SIRsys, p->(@MVector([763-p[1], p[1], 0.0]), p[2:3]), SIRobservables, [0.5, 0.002, 0.5]; pnames=["I₀", "β", "γ"], tol=1e-8)
 
 
-SIR3planes, SIR3sols = ConfidenceRegion(SIRDM3, 1; N=50, tol=1e-3)
+SIR3sols = ConfidenceRegion(SIRDM3, 1; N=50, tol=1e-3)
 
 
-VisualizeSols(SIRDM3, SIR3planes, SIR3sols)
+VisualizeSols(SIRDM3, SIR3sols)
 
 
-plot(SIRDM3);   ConfidenceBands(SIRDM3, SIR3planes, SIR3sols)
+plot(SIRDM3);   ConfidenceBands(SIRDM3, SIR3sols)
